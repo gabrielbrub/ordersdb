@@ -1,6 +1,6 @@
 # Orders Manager
 
-API para o projeto [Orders Manager](https://github.com/gabrielbrub/orders_manager).
+API desenvolvida para o projeto [Orders Manager](https://github.com/gabrielbrub/orders_manager).
 
 ### Pré-requisitos
 
@@ -17,7 +17,7 @@ MySQL
  create user 'OrdersManager'@'localhost' identified by '';
  grant select, insert, delete, update on ordersdb.* to 'OrdersManager'@'localhost';
  ```
- 
+ Ou especifique um usuário existente no application.properties
 
 ## Feito com
 
