@@ -1,4 +1,4 @@
-# Orders Manager
+# OrdersDB
 
 API desenvolvida para o projeto [Orders Manager](https://github.com/gabrielbrub/orders_manager).
 
