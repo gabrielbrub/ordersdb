@@ -1,11 +1,9 @@
 package com.brub.ordersdb.controller;
+import com.brub.ordersdb.model.Product;
+import com.brub.ordersdb.repository.ProductRepository;
 
-import com.brub.ordersdb.modelo.Product;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -18,11 +16,11 @@ public class ProductForm {
         this.name = name;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -30,9 +28,16 @@ public class ProductForm {
     private String name;
 
     @NotNull
-    private int price;
+    private double price;
 
     public Product convert() {
         return new Product(name, price);
+    }
+
+    public Product update(Long id, ProductRepository productRepository) {
+        Product product = productRepository.getOne(id);
+        product.setPrice(price);
+        product.setName(name);
+        return product;
     }
 }

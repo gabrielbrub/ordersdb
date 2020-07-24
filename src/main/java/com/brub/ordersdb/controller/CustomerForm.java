@@ -1,6 +1,7 @@
 package com.brub.ordersdb.controller;
 
-import com.brub.ordersdb.modelo.Customer;
+import com.brub.ordersdb.model.Customer;
+import com.brub.ordersdb.repository.CustomerRepository;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,14 +10,17 @@ import javax.validation.constraints.NotNull;
 public class CustomerForm {
     @NotNull
     @NotEmpty
-    @Length(min = 5)
     private String name;
 
     @NotNull
     @NotEmpty
+    @Length(min = 10)
     private String cpf;
 
-    @NotNull @NotEmpty @Length(min = 10)
+    @NotNull @NotEmpty
+    private String address;
+
+    @NotNull @NotEmpty
     private String phoneNumber;
 
     public String getName() {
@@ -35,23 +39,33 @@ public class CustomerForm {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    @NotNull @NotEmpty
-    private String adress;
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
     public Customer convert() {
-        Customer customer = new Customer(cpf, name, phoneNumber, adress);
-        customer.setCpf(cpf);
-        customer.setName(name);
-        customer.setAddress(adress);
-        customer.setPhoneNumber(phoneNumber);
+        return new Customer(cpf, name, phoneNumber, address);
+    }
+
+    public Customer update(Long id, CustomerRepository customerRepository) {
+        Customer customer = customerRepository.getOne(id);
+        customer.setCpf(this.cpf);
+        customer.setName(this.name);
+        customer.setAddress(this.address);
+        customer.setPhoneNumber(this.phoneNumber);
         return customer;
     }
 }

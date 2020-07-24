@@ -1,4 +1,4 @@
-package com.brub.ordersdb.modelo;
+package com.brub.ordersdb.model;
 
 
 public enum OrderStatus {

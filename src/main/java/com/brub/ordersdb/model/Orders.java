@@ -1,5 +1,7 @@
-package com.brub.ordersdb.modelo;
+package com.brub.ordersdb.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,14 +14,25 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //PERSIST
     private List<Item> items = new ArrayList<>();
-//    private List<Product> productsList = new ArrayList<>();
     private LocalDateTime orderDate;
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.ACTIVE;
+    private LocalDateTime creationDate = LocalDateTime.now();
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
 
     public OrderStatus getStatus() {
         return status;
@@ -37,17 +50,8 @@ public class Orders {
         this.orderDate = orderDate;
     }
 
-    private OrderStatus orderStatus = OrderStatus.ACTIVE;
 
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Orders (){
+    public Orders(){
         super();
     }
 
@@ -55,7 +59,6 @@ public class Orders {
         this.customer = customer;
         this.items = items;
         this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
     }
 
     @Override
@@ -91,7 +94,8 @@ public class Orders {
         return items;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setItems(List<Item> itemList) {
+        items.clear();
+        items.addAll(itemList);
     }
 }

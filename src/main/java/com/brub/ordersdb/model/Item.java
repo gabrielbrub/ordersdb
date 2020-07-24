@@ -1,6 +1,9 @@
-package com.brub.ordersdb.modelo;
+package com.brub.ordersdb.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -12,12 +15,17 @@ public class Item {
     @JoinColumn(name = "product_id")
     private Product product;
     private int amount;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "orders_id")
     private Orders order;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Item(){
@@ -28,6 +36,20 @@ public class Item {
         this.product = product;
         this.amount = amount;
         this.order = order;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id.equals(item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Product getProduct() {

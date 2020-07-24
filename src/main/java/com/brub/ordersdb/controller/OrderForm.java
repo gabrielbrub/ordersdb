@@ -1,22 +1,15 @@
 package com.brub.ordersdb.controller;
 
-import com.brub.ordersdb.modelo.Customer;
-import com.brub.ordersdb.modelo.Item;
-import com.brub.ordersdb.modelo.Orders;
-import com.brub.ordersdb.modelo.Product;
+import com.brub.ordersdb.model.*;
 import com.brub.ordersdb.repository.CustomerRepository;
-import com.brub.ordersdb.repository.ItemRepository;
 import com.brub.ordersdb.repository.ProductRepository;
 
-import javax.persistence.criteria.Order;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class OrderForm {
     @NotNull
@@ -24,17 +17,18 @@ public class OrderForm {
     @NotNull
     private String date;
     @NotNull
-    private String customerCPF;
-//    @NotNull
-//    private String productName;
+    private String customerCpf;
+    private String status;
 
-    public String getCustomerCPF() {
-        return customerCPF;
+
+    public String getCustomerCpf() {
+        return customerCpf;
     }
 
-    public void setCustomerCPF(String customerCPF) {
-        this.customerCPF = customerCPF;
+    public void setCustomerCpf(String customerCpf) {
+        this.customerCpf = customerCpf;
     }
+
 
     public Map<String, Integer> getProducts() {
         return products;
@@ -53,21 +47,23 @@ public class OrderForm {
     }
 
 
-//    public String getProductName() {
-//        return productName;
-//    }
-//
-//    public void setProductName(String productName) {
-//        this.productName = productName;
-//    }
-
     public Orders convert(CustomerRepository customerRepository, ProductRepository productRepository) {
         Orders order = new Orders();
+        return getOrders(productRepository, customerRepository, order);
+    }
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private Orders getOrders(ProductRepository productRepository, CustomerRepository customerRepository, Orders order) {
         List<Item> itemList = new ArrayList<>();
-//        Item item = new Item(productRepository.findByName(productName), 2, order);
-        //Item item = new Item();
-        products.forEach((k,v) -> {
+        products.forEach((k, v) -> {
             Item item = new Item();
             item.setProduct(productRepository.findByName(k));
             item.setAmount(v);
@@ -76,12 +72,14 @@ public class OrderForm {
         });
         order.setItems(itemList);
 
+        if(status!=null)
+            order.setStatus(OrderStatus.valueOf(status.toUpperCase()));
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         order.setOrderDate(dateTime);
+        order.setCustomer(customerRepository.findByCpf(customerCpf));
 
-        order.setCustomer(customerRepository.findByCpf(customerCPF));
         return order;
-//        return new Orders(customerRepository.findByCpf(customerCPF), itemList, dateTime);
     }
 }

@@ -9,19 +9,14 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import com.brub.ordersdb.controller.dto.CustomerDto;
-import com.brub.ordersdb.modelo.Customer;
+import com.brub.ordersdb.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping(value = "/customers", produces={"application/json; charset=UTF-8"})
 public class CustomersController {
 
     @Autowired
@@ -40,7 +35,7 @@ public class CustomersController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<CustomerDto> cadastrar(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<CustomerDto> register(@RequestBody @Valid CustomerForm form, UriComponentsBuilder uriBuilder) {
         Customer customer = form.convert();
         customerRepository.save(customer);
 
@@ -50,7 +45,7 @@ public class CustomersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> detalhar(@PathVariable Long id) {
+    public ResponseEntity<CustomerDto> detail(@PathVariable Long id) {
         Optional<Customer> Customer = customerRepository.findById(id);
         if (Customer.isPresent()) {
             return ResponseEntity.ok(new CustomerDto(Customer.get()));
@@ -59,28 +54,26 @@ public class CustomersController {
         return ResponseEntity.notFound().build();
     }
 
-//    @PutMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity<CustomerDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoCustomerForm form) {
-//        Optional<Customer> optional = CustomerRepository.findById(id);
-//        if (optional.isPresent()) {
-//            Customer Customer = form.atualizar(id, CustomerRepository);
-//            return ResponseEntity.ok(new CustomerDto(Customer));
-//        }
-//
-//        return ResponseEntity.notFound().build();
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity<?> remover(@PathVariable Long id) {
-//        Optional<Customer> optional = CustomerRepository.findById(id);
-//        if (optional.isPresent()) {
-//            CustomerRepository.deleteById(id);
-//            return ResponseEntity.ok().build();
-//        }
-//
-//        return ResponseEntity.notFound().build();
-//    }
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<CustomerDto> update(@PathVariable Long id, @RequestBody @Valid CustomerForm form) {
+        Optional<Customer> optional = customerRepository.findById(id);
+        if (optional.isPresent()) {
+            Customer Customer = form.update(id, customerRepository);
+            return ResponseEntity.ok(new CustomerDto(Customer));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> remove(@PathVariable Long id) {
+        Optional<Customer> optional = customerRepository.findById(id);
+        if (optional.isPresent()) {
+            customerRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }

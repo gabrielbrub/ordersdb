@@ -1,6 +1,6 @@
 package com.brub.ordersdb.controller.dto;
 
-import com.brub.ordersdb.modelo.Product;
+import com.brub.ordersdb.model.Product;
 
 import java.util.List;
 import java.util.stream.Collectors;

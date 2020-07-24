@@ -1,6 +1,6 @@
 package com.brub.ordersdb.repository;
 
-import com.brub.ordersdb.modelo.Customer;
+import com.brub.ordersdb.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

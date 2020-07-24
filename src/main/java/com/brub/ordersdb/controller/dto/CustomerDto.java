@@ -4,14 +4,14 @@ package com.brub.ordersdb.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.brub.ordersdb.modelo.Customer;
+import com.brub.ordersdb.model.Customer;
 
 public class CustomerDto {
 
     private long id;
     private String name;
     private String phoneNumber;
-    private String adress;
+    private String address;
     private String cpf;
 
     public String getCpf() {
@@ -23,7 +23,7 @@ public class CustomerDto {
         this.name = customer.getName();
         this.cpf = customer.getCpf();
         this.phoneNumber = customer.getPhoneNumber();
-        this.adress = customer.getAddress();
+        this.address = customer.getAddress();
     }
 
     public Long getId() {
@@ -38,8 +38,8 @@ public class CustomerDto {
         return phoneNumber;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public static List<CustomerDto> converter(List<Customer> customers) {

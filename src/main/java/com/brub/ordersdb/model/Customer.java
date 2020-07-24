@@ -1,6 +1,8 @@
-package com.brub.ordersdb.modelo;
+package com.brub.ordersdb.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +12,17 @@ public class Customer {
     private long id;
     @Column(unique = true, length = 11)
     private String cpf;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orders> orders = new ArrayList();
+
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
 
     public Customer(){
         super();
