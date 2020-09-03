@@ -18,6 +18,11 @@ public class Orders {
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //PERSIST
     private List<Item> items = new ArrayList<>();
     private LocalDateTime orderDate;
@@ -55,10 +60,18 @@ public class Orders {
         super();
     }
 
-    public Orders(Customer customer, List<Item> items, LocalDateTime orderDate) {
-        this.customer = customer;
-        this.items = items;
-        this.orderDate = orderDate;
+//    public Orders(Customer customer, List<Item> items, LocalDateTime orderDate) {
+//        this.customer = customer;
+//        this.items = items;
+//        this.orderDate = orderDate;
+//    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

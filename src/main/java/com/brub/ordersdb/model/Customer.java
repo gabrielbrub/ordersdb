@@ -1,5 +1,7 @@
 package com.brub.ordersdb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,10 @@ public class Customer {
     private String cpf;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orders> orders = new ArrayList();
-
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public List<Orders> getOrders() {
         return orders;
@@ -28,11 +33,12 @@ public class Customer {
         super();
     }
 
-    public Customer(String cpf, String name, String phoneNumber, String address) {
+    public Customer(String cpf, String name, String phoneNumber, String address, User user) {
         this.cpf = cpf;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.user = user;
     }
 
     private String name;

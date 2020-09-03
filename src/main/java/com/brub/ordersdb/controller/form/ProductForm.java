@@ -1,7 +1,8 @@
-package com.brub.ordersdb.controller;
+package com.brub.ordersdb.controller.form;
 import com.brub.ordersdb.model.Product;
+import com.brub.ordersdb.model.User;
 import com.brub.ordersdb.repository.ProductRepository;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,8 @@ public class ProductForm {
     private double price;
 
     public Product convert() {
-        return new Product(name, price);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new Product(name, price, user);
     }
 
     public Product update(Long id, ProductRepository productRepository) {

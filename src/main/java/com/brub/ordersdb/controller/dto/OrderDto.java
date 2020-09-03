@@ -48,19 +48,14 @@ public class OrderDto {
         return creationDate;
     }
 
-//    public Customer getCustomer() {
-//        return customer;
-//    }
-
     public Map<String, String> getCustomer(){
         return customer;
     }
 
-    private void setCustomer(Orders o){
+    private void setCustomer(Customer c){
         customer = new HashMap<>();
-        System.out.println(o.getCustomer().getCpf());
-        customer.put("cpf", o.getCustomer().getCpf());
-        customer.put("name", o.getCustomer().getName());
+        customer.put("cpf", c.getCpf());
+        customer.put("name", c.getName());
     }
 
 
@@ -74,7 +69,7 @@ public class OrderDto {
         });
         this.date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(o.getOrderDate());
         this.creationDate = o.getCreationDate();
-        setCustomer(o);
+        this.setCustomer(o.getCustomer());
 //        this.customer = o.getCustomer();
     }
 

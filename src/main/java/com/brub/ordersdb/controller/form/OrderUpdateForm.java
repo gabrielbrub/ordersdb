@@ -1,4 +1,4 @@
-package com.brub.ordersdb.controller;
+package com.brub.ordersdb.controller.form;
 
 import com.brub.ordersdb.model.Item;
 import com.brub.ordersdb.model.OrderStatus;

@@ -1,5 +1,7 @@
 package com.brub.ordersdb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,10 @@ public class Product {
     private double price;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> item = new ArrayList<>();
-
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -30,9 +35,10 @@ public class Product {
         super();
     }
 
-    public Product(String name, double price) {
+    public Product(String name, double price, User user) {
         this.name = name;
         this.price = price;
+        this.user = user;
     }
 
     @Override

@@ -1,8 +1,10 @@
-package com.brub.ordersdb.controller;
+package com.brub.ordersdb.controller.form;
 
 import com.brub.ordersdb.model.Customer;
+import com.brub.ordersdb.model.User;
 import com.brub.ordersdb.repository.CustomerRepository;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -57,7 +59,8 @@ public class CustomerForm {
     }
 
     public Customer convert() {
-        return new Customer(cpf, name, phoneNumber, address);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new Customer(cpf, name, phoneNumber, address, user);
     }
 
     public Customer update(Long id, CustomerRepository customerRepository) {

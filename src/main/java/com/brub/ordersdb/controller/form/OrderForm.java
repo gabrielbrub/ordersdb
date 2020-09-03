@@ -1,8 +1,9 @@
-package com.brub.ordersdb.controller;
+package com.brub.ordersdb.controller.form;
 
 import com.brub.ordersdb.model.*;
 import com.brub.ordersdb.repository.CustomerRepository;
 import com.brub.ordersdb.repository.ProductRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -71,7 +72,8 @@ public class OrderForm {
             itemList.add(item);
         });
         order.setItems(itemList);
-
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        order.setUser(user);
         if(status!=null)
             order.setStatus(OrderStatus.valueOf(status.toUpperCase()));
 
