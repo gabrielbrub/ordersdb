@@ -5,8 +5,8 @@ API desenvolvida para o projeto [Orders Manager](https://github.com/gabrielbrub/
 ### Pré-requisitos
 
 ```
-JDK
-MySQL
+JDK 8
+MySQL 8
 ```
 
 ## Uso
@@ -15,9 +15,15 @@ MySQL
 
 ```
  create user 'OrdersManager'@'localhost' identified by '';
- grant select, insert, delete, update on ordersdb.* to 'OrdersManager'@'localhost';
+ grant all privileges on ordersdb.* to 'OrdersManager'@'localhost';
  ```
- Ou especifique um usuário existente no application.properties
+ Ou especifique um usuário existente no application.properties.
+ 
+ Para visualizar os endpoints disponíveis, acesse
+ 
+ ```
+http://localhost:8080/swagger-ui.html
+ ```
 
 ## Feito com
 
